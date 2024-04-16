@@ -1,0 +1,68 @@
+syntax = "proto3";
+package web;
+
+option go_package = "web/v1;web";
+
+import "tagger/tagger.proto";
+
+// 登录接口请求参数
+message AuthLoginRequest{
+  // 登录手机号
+  string mobile = 1 [(tagger.tags) = "binding:\"required\""];
+  // 登录密码
+  string password = 2 [(tagger.tags) = "binding:\"required\""];
+  // 登录平台
+  string platform = 3 [(tagger.tags) = "binding:\"required,oneof=h5 ios windows mac web\""];
+}
+
+// 登录接口响应参数
+message AuthLoginResponse{
+  // Token 类型
+  string type = 1;
+  // token
+  string access_token = 2;
+  // 过期时间
+  int32 expires_in = 3;
+}
+
+// 注册接口请求参数
+message AuthRegisterRequest{
+  // 登录手机号
+  string nickname = 1 [(tagger.tags) = "binding:\"required,min=2,max=30\""];
+  // 登录手机号
+  string mobile = 2 [(tagger.tags) = "binding:\"required,len=11,phone\""];
+  // 登录密码
+  string password = 3 [(tagger.tags) = "binding:\"required,min=6,max=16\""];
+  // 登录平台
+  string platform = 4 [(tagger.tags) = "binding:\"required,oneof=h5 ios windows mac web\""];
+  // 短信验证码
+  string sms_code = 5 [(tagger.tags) = "binding:\"required\""];
+}
+
+// 注册接口响应参数
+message AuthRegisterResponse{
+
+}
+
+// Token 刷新接口请求参数
+message AuthRefreshRequest{}
+
+// Token 刷新接口响应参数
+message AuthRefreshResponse{
+  string type = 1;
+  string access_token = 2;
+  int32 expires_in = 3;
+}
+
+// 找回密码接口请求参数
+message AuthForgetRequest{
+  // 手机号
+  string mobile = 1 [(tagger.tags) = "binding:\"required,len=11,phone\""];
+  // 登录密码
+  string password = 2 [(tagger.tags) = "binding:\"required,min=6,max=16\""];
+  // 短信验证码
+  string sms_code = 3 [(tagger.tags) = "binding:\"required\""];
+}
+
+// 找回密码接口响应参数
+message AuthForgetResponse{}
